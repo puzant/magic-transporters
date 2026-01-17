@@ -37,6 +37,7 @@ npm run dev
 - API base path: /api
 
 ## Project Structure
+```
 ├── controllers/     # Thin HTTP handlers
 ├── services/        # Business logic + DB operations
 ├── models/          # Mongoose schemas & interfaces
@@ -44,3 +45,4 @@ npm run dev
 ├── utils/           # AppError, ApiResponse, asyncHandler
 ├── middleware/      # Error handler
 └── app.ts           # Express app setup + DB connection
+```
