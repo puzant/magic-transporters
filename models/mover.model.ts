@@ -1,14 +1,6 @@
-import mongoose, { Document, Model } from 'mongoose'
+import mongoose, { model, InferSchemaType } from 'mongoose'
 
-export interface IMover extends Document {
-  name: string
-  weightLimit: number
-  questsCompleted: number
-  state: 'resting' | 'loading' | 'on-mission'
-  currentLoad: mongoose.Types.ObjectId[]
-}
-
-const moverSchema = new mongoose.Schema<IMover>({
+const moverSchema = new mongoose.Schema({
   name: { type: String, required: true },
   weightLimit: { type: Number, required: true },
   questsCompleted: { type: Number, default: 0 },
@@ -20,4 +12,6 @@ const moverSchema = new mongoose.Schema<IMover>({
   currentLoad: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Item' }]
 })
 
-export const Mover: Model<IMover> = mongoose.model<IMover>('Mover', moverSchema);
+export type Mover = InferSchemaType<typeof moverSchema>
+export type MoverDocument = mongoose.HydratedDocument<Mover>
+export const MoverModel = model<MoverDocument>('Mover', moverSchema)
