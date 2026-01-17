@@ -1,23 +1,23 @@
 import { Model, Types } from "mongoose"
-import { IMover } from "../models/mover.model"
-import { IItem } from "../models/item.model"
-import { IMissionLog } from "../models/missionLog.model"
+import { Mover } from "../models/mover.model"
+import { Item } from "../models/item.model"
+import { MissionLog } from "../models/missionLog.model"
 
 import AppError from "../utils/appError"
 import { StatusCodes as Status } from "http-status-codes"
 
 class MoverService {
   constructor(
-    private Mover: Model<IMover>, 
-    private Item: Model<IItem>,
-    private MissionLog:Model<IMissionLog>
+    private Mover: Model<Mover>, 
+    private Item: Model<Item>,
+    private MissionLog:Model<MissionLog>
   ) {}
   
-  async addMover(data: { name: string, weightLimit: number }): Promise<IMover> {
+  async addMover(data: { name: string, weightLimit: number }): Promise<Mover> {
     return this.Mover.create(data)
   }
 
-  async addItem(data: { name: string, weight: number }): Promise<IItem> {
+  async addItem(data: { name: string, weight: number }): Promise<Item> {
     return this.Item.create(data)
   }
 
@@ -35,13 +35,13 @@ class MoverService {
   *
   * @param {Types.ObjectId} moverId - Mover identifier
   * @param {Types.ObjectId[]} itemIds - Item identifiers to load
-  * @returns {Promise<IMover>} Updated mover document
+  * @returns {Promise<Mover>} Updated mover document
   *
   * @throws {AppError} If mover does not exist
   * @throws {AppError} If mover is not resting
   * @throws {AppError} If total item weight exceeds mover limit
   */
-  async loadMover(moverId: Types.ObjectId, itemIds: Types.ObjectId[]): Promise<IMover> {
+  async loadMover(moverId: Types.ObjectId, itemIds: Types.ObjectId[]): Promise<Mover> {
     const mover = await this.Mover.findById(moverId)
 
     if (!mover) 
@@ -81,12 +81,12 @@ class MoverService {
    * - Increments questsCompleted counter
    *
    * @param {Types.ObjectId} moverId - Mover identifier
-   * @returns {Promise<IMover>} Updated mover document
+   * @returns {Promise<Mover>} Updated mover document
    *
    * @throws {AppError} If mover does not exist
    * @throws {AppError} If mover is not in loading state
    */
-  async startMission(moverId: Types.ObjectId): Promise<IMover> {
+  async startMission(moverId: Types.ObjectId): Promise<Mover> {
     const mover = await this.Mover.findById(moverId)
 
     if (!mover) 
@@ -117,12 +117,12 @@ class MoverService {
    * - Creates a mission log entry with action "end-mission"
    *
    * @param {Types.ObjectId} moverId - Mover identifier
-   * @returns {Promise<IMover>} Updated mover document
+   * @returns {Promise<Mover>} Updated mover document
    *
    * @throws {AppError} If mover does not exist
    * @throws {AppError} If mover is not currently on a mission
    */
-  async endMission(moverId: Types.ObjectId): Promise<IMover> {
+  async endMission(moverId: Types.ObjectId): Promise<Mover> {
     const mover = await this.Mover.findById(moverId)
 
     if (!mover) 
