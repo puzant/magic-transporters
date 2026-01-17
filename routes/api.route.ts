@@ -1,12 +1,12 @@
 import { Router } from "express"
-import { Mover } from "../models/mover.model"
-import { Item } from "../models/item.model"
-import { MissionLog } from "../models/missionLog.model"
+import { MoverModel } from "../models/mover.model"
+import { ItemModel } from "../models/item.model"
+import { MissionLogModel } from "../models/missionLog.model"
 import MoverService from "../services/mover.service"
 import MoverController from "../controllers/mover.controller"
 
 const router = Router()
-const moverService = new MoverService(Mover, Item, MissionLog)
+const moverService = new MoverService(MoverModel, ItemModel, MissionLogModel)
 const moverController = new MoverController(moverService)
 
 router.post('/movers', moverController.addMover)
