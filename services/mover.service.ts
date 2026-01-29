@@ -6,6 +6,12 @@ import { MissionLog } from "../models/missionLog.model"
 import AppError from "../utils/appError"
 import { StatusCodes as Status } from "http-status-codes"
 
+enum STATE {
+  RESTING = 'resting',
+  LOADING = 'loading',
+  ['ON-MISSION'] = 'on-mission'
+}
+
 class MoverService {
   constructor(
     private Mover: Model<Mover>, 
@@ -47,7 +53,7 @@ class MoverService {
     if (!mover) 
       throw new AppError("Mover not found", Status.NOT_FOUND)
 
-    if (mover.state !== 'resting') 
+    if (mover.state !== STATE.RESTING) 
       throw new AppError("Mover must be resting to load items", Status.BAD_REQUEST)
 
     const items = await this.Item.find({ _id: { $in: itemIds } })
@@ -92,7 +98,7 @@ class MoverService {
     if (!mover) 
       throw new AppError("Mover not found", Status.NOT_FOUND)
 
-    if (mover.state !== 'loading') 
+    if (mover.state !== STATE.LOADING) 
       throw new AppError("Mover must be loaded to start a mission", Status.BAD_REQUEST)
 
     mover.state = 'on-mission'
@@ -128,7 +134,7 @@ class MoverService {
     if (!mover) 
       throw new AppError("Mover not found", Status.NOT_FOUND)
 
-    if (mover.state !== 'on-mission') 
+    if (mover.state !== STATE["ON-MISSION"]) 
       throw new AppError("Mover must be on mission to end it", Status.BAD_REQUEST)
 
     const items = mover.currentLoad
